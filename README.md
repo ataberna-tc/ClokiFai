@@ -43,18 +43,31 @@ ClokiFai/
 ## Configuración 🛠️
 
 1. Crea un archivo `files/config.yaml` (sí, en la carpeta `files`, no seas rebelde)
-2. Llénalo con tus secretos:
-   ```yaml
-   clockify:
-     api_key: "tu-super-secreta-api-key"
-   workspace:
-     name: "Tu Workspace Favorito"
-   ```README.md
-   (Hay más configuraciones, pero dejemos algo para la sorpresa 😉)
+2. El archivo de configuración se divide en varias secciones:
 
-## Uso 🚀
+   - [Workspace Configuration](docs/workspace.md) 🏢 - Define tus clientes, proyectos y reuniones diarias
+   - [Time Configuration](docs/time.md) ⏰ - Configura el período de trabajo y horarios
+   - [Execution Configuration](docs/execution.md) 🎮 - Controla cómo se ejecuta el programa
+   - [Sources Configuration](docs/sources.md) 📊 - Configura tus fuentes de datos (Asana, CSV)
 
-```
+3. [Ver ejemplo completo de configuración](docs/config-example.md) 📝
+
+## Uso Rápido 🚀
+
+```bash
+# 1. Clona el repositorio
+git clone https://github.com/tu-usuario/clokifai.git
+
+# 2. Instala las dependencias
+pip install -r requirements.txt
+
+# 3. Copia el ejemplo de configuración
+cp docs/config-example.yaml files/config.yaml
+
+# 4. Edita la configuración con tus datos
+nano files/config.yaml
+
+# 5. ¡Ejecuta!
 python app.py
 ```
 
