@@ -1,0 +1,53 @@
+workspace:
+  name: 'Mi Workspace'
+  clients:
+    - name: 'cliente-ejemplo'
+      project: 'Proyecto Demo'
+      task: 'Desarrollo'
+      start_time: 9
+      end_time: 18
+      daily_meetings:
+        - description: 'Daily Scrum'
+          start_time: 12
+          end_time: 12.5    # 12:30
+
+time:
+  year: 2025
+  month: 2
+  start_day: 4
+  end_day: 28
+  lunch_start: 12.5    # 12:30
+  lunch_end: 13.5     # 13:30
+
+execution:
+  dry_run: true
+  logging:
+    console_level: "INFO"    # ERROR, WARNING, INFO, DEBUG
+    file_level: "DEBUG"      # ERROR, WARNING, INFO, DEBUG
+    file_name: "clockify_automation.log"
+  sources:
+    - type: "asana"
+      enabled: true
+    - type: "csv"
+      enabled: false
+      file_path: "tareas_manuales.csv"
+      mapping:
+        client:
+          type: "fixed"  # puede ser "fixed" o "column"
+          value: "cliente-ejemplo"  # si es fixed, este es el valor; si es column, este es el nombre de la columna
+        task:
+          type: "column"
+          value: "Descripcion"  # nombre de la columna en el CSV de entrada
+        day:
+          type: "column"
+          value: "Fecha"  # nombre de la columna en el CSV de entrada
+
+clockify:
+  api_key: "tu-api-key-de-clockify-aqui"  # Ejemplo: "1234567890abcdef1234567890abcdef"
+
+asana:
+  access_token: "tu-token-de-asana-aqui"  # Ejemplo: "1/1234567890:abcdef1234567890"
+  workspace_id: "123456789"  # Tu workspace ID de Asana
+  date_range:
+    start: "2025-02-04"
+    end: "2025-02-28"

@@ -1,0 +1,5 @@
+requests>=2.31.0
+pandas>=2.1.0
+pyyaml>=6.0.1
+asana>=3.2.1
+python-dateutil>=2.8.2
