@@ -170,4 +170,10 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-.csv
+# CSV files
+*.csv
+
+# Configuration files
+files/config.yaml
+config.yaml
+/files/config.yaml
