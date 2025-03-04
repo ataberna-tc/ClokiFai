@@ -51,19 +51,22 @@ def create_daily_time_entries(project_id: str, project_task_id: str, description
                 current_date.month, 
                 current_date.day,
                 int(start_time),
-                int((start_time % 1) * 60)
+                int((start_time % 1) * 60),
+                0  # Agregamos segundos explícitamente
             )
             entry_end = datetime.datetime(
                 current_date.year, 
                 current_date.month, 
                 current_date.day,
                 int(end_time),
-                int((end_time % 1) * 60)
+                int((end_time % 1) * 60),
+                0  # Agregamos segundos explícitamente
             )
             
             entry = time_entry.copy()
-            entry['start'] = entry_start.isoformat() + 'Z'
-            entry['end'] = entry_end.isoformat() + 'Z'
+            # Formato exacto que requiere Clockify: "2018-11-29T13:00:46Z"
+            entry['start'] = entry_start.strftime('%Y-%m-%dT%H:%M:00Z')
+            entry['end'] = entry_end.strftime('%Y-%m-%dT%H:%M:00Z')
             entries.append(entry)
             
         current_date += datetime.timedelta(days=1)

@@ -62,9 +62,33 @@ def get_project_task_by_name(workspace_id, project_id, task_name):
 def create_time_entry(workspace_id, time_entry):
     api_key = get_api_key()
     data = {'x-api-key': api_key}
-    time_entry['start'] = utc_3(time_entry['start']).isoformat() + 'Z'
-    time_entry['end'] = utc_3(time_entry['end']).isoformat() + 'Z'
-    r = requests.post(f'https://api.clockify.me/api/v1/workspaces/{workspace_id}/time-entries', headers=data, json=time_entry)
+
+    # Crear una copia del time_entry para no modificar el original
+    entry_to_send = time_entry.copy()
+
+    # Convertir las fechas al formato correcto si son strings
+    if isinstance(entry_to_send['start'], str):
+        start_time = datetime.datetime.fromisoformat(entry_to_send['start'].replace('Z', ''))
+    else:
+        start_time = entry_to_send['start']
+
+    if isinstance(entry_to_send['end'], str):
+        end_time = datetime.datetime.fromisoformat(entry_to_send['end'].replace('Z', ''))
+    else:
+        end_time = entry_to_send['end']
+
+    # Aplicar UTC+3 y formatear correctamente
+    entry_to_send['start'] = utc_3(start_time).strftime('%Y-%m-%dT%H:%M:00Z')
+    entry_to_send['end'] = utc_3(end_time).strftime('%Y-%m-%dT%H:%M:00Z')
+
+    r = requests.post(
+        f'https://api.clockify.me/api/v1/workspaces/{workspace_id}/time-entries', 
+        headers=data, 
+        json=entry_to_send
+    )
+
+    if r.status_code >= 400:
+        raise Exception(f"{time_entry}: " + str(r.json()))
     return r.json()
 
 def utc_3(some_date):
