@@ -28,9 +28,10 @@ def create_task_entry(task, start_time, end_time, last_task, last_task_start, ye
     return task['description'], task_start, time_entry
 
 def create_daily_time_entries(project_id: str, project_task_id: str, description: str, 
-                            start_date: datetime.datetime, end_date: datetime.datetime) -> List[Dict]:
+                            start_date: datetime.datetime, end_date: datetime.datetime,
+                            start_time: float, end_time: float) -> List[Dict]:
     """
-    Crea entradas de tiempo diarias para un período específico.
+    Crea entradas de tiempo diarias para un período específico usando el horario configurado.
     """
     logger = logging.getLogger('clockify_automation')
     time_entry = {
@@ -45,8 +46,20 @@ def create_daily_time_entries(project_id: str, project_task_id: str, description
     while current_date <= end_date:
         logger.debug(f"Creando time entry para {current_date}")
         if current_date.weekday() < 5:  # Solo días laborables (Lun-Vie)
-            entry_start = datetime.datetime.combine(current_date.date(), start_date.time())
-            entry_end = datetime.datetime.combine(current_date.date(), end_date.time())
+            entry_start = datetime.datetime(
+                current_date.year, 
+                current_date.month, 
+                current_date.day,
+                int(start_time),
+                int((start_time % 1) * 60)
+            )
+            entry_end = datetime.datetime(
+                current_date.year, 
+                current_date.month, 
+                current_date.day,
+                int(end_time),
+                int((end_time % 1) * 60)
+            )
             
             entry = time_entry.copy()
             entry['start'] = entry_start.isoformat() + 'Z'
@@ -239,7 +252,9 @@ def dummy_to_time_entries(entries_wo_time: List[Dict], workspace_id: str, year: 
                 task_id,
                 meeting['description'],
                 start_date,
-                end_date
+                end_date,
+                meeting['start_time'],    # Usar start_time de la configuración
+                meeting['end_time']       # Usar end_time de la configuración
             )
             time_entries.extend(daily_entries)
             logger.info(f"Agregadas {len(daily_entries)} entradas para daily meeting: {meeting['description']}")

@@ -175,13 +175,18 @@ def main(output_file: str = 'horarios.csv') -> bool:
             logger.error("Falta configuración de Asana (access_token o workspace_id)")
             return False
         
-        # Obtener fechas del rango
-        date_range = asana_config.get('date_range', {})
+        # Obtener fechas del rango desde la configuración de time
+        time_config = config.get('time', {})
         try:
-            start_date = datetime.fromisoformat(date_range.get('start'))
-            end_date = datetime.fromisoformat(date_range.get('end'))
+            year = time_config.get('year')
+            month = time_config.get('month')
+            start_day = time_config.get('start_day')
+            end_day = time_config.get('end_day')
+            
+            start_date = datetime(year, month, start_day)
+            end_date = datetime(year, month, end_day)
         except (ValueError, TypeError) as e:
-            logger.error(f"Error al procesar las fechas: {str(e)}")
+            logger.error(f"Error al procesar las fechas desde la configuración time: {str(e)}")
             return False
         
         logger.info(f"Período de búsqueda: {start_date.date()} hasta {end_date.date()}")
