@@ -51,9 +51,6 @@ clockify:
 asana:
   access_token: "tu-token-de-asana-aqui"
   workspace_id: "123456789"
-  date_range:
-    start: "2025-02-04"
-    end: "2025-02-28"
 ```
 
 ## Notas Importantes 📌

@@ -5,15 +5,11 @@
 asana:
   access_token: "tu-token-de-asana"
   workspace_id: "123456789"
-  date_range:
-    start: "2025-02-04"
-    end: "2025-02-28"
 ```
 
 ### Campos
 - `access_token`: Tu token personal de Asana 🔑
 - `workspace_id`: ID del workspace de Asana 🏢
-- `date_range`: Rango de fechas a procesar 📅
 
 ## CSV
 ```yaml
